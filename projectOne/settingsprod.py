@@ -32,6 +32,10 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [‘https://williamholtsdalen.com/’]
+CSRF_ALLOWED_ORIGINS = [‘https://williamholtsdalen.com/’]
+CORS_ORIGINS_WHITELIST = [‘williamholtsdalen.com’]
+CORS_ALLOWED_ORIGINS = [‘williamholtsdalen.com’]
 
 # Application definition
 
