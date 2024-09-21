@@ -82,8 +82,8 @@ WSGI_APPLICATION = 'projectOne.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': projectone,
-        'USER': projectoneuser,
+        'NAME': 'projectone',
+        'USER': 'projectoneuser',
         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST': 'localhost',
         'PORT': ''
