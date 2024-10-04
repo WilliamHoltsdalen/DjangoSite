@@ -8,7 +8,6 @@ def account_context(request):
             customer = Customer.objects.get(user=request.user)
             account = BankAccount.objects.get(customer=customer)
         except BankAccount.DoesNotExist or Customer.DoesNotExist:
-            # return render(request, 'error.html', {'message': 'Kunde ikke funnet!'})
             account = None
     return {
         'account': account
