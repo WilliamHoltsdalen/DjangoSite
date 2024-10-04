@@ -1,11 +1,10 @@
-from django.db import models
-
-# Create your models here.
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
 class Customer(models.Model):
-    frist_name = models.CharField(max_length=100)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email =models.EmailField()
     phone_number = models.CharField(max_length=20)
@@ -21,8 +20,11 @@ class BankAccount(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def deposit(self, amount):
-        self.balance += amount
-        self.save()
+        if amount > 0:
+            self.balance += amount
+            self.save()
+            return True
+        return False
 
     def withdraw(self, amount):
         if self.balance >= amount:
@@ -43,6 +45,7 @@ class Transaction(models.Model):
     account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name='transactions')
     transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPE_CHOICES)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+    balance_after = models.DecimalField(max_digits=10, decimal_places=2)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

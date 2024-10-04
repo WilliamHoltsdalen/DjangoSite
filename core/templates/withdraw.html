@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Uttak{% endblock %}
+
+{% block content %}
+    <h1>Uttak fra Konto</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="amount">Beløp:</label>
+        <input type="number" name="amount" required>
+        <button type="submit">Uttak</button>
+    </form>
+    <a href="{% url 'dashboard' %}">Tilbake til dashboard</a>
+    {% endblock %}

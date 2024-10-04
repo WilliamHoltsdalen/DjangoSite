@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Operasjonen var vellykket!{% endblock %}
+
+{% block content %}
+    <h1>Operasjonen var vellykket!</h1>
+    <p>{{ message }}</p>
+    <a href="{% url 'dashboard' %}">Tilbake til dashboard</a>
+{% endblock %}

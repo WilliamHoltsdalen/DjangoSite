@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Velkommen til BankApp!{% endblock %}
+
+{% block content %}
+<h1>HOME</h1>
+<h2>Hello World!</h2>
+
+<div class="col-md-4">
+    <a href="{% url 'dashboard' %}" class="btn btn-primary btn-block">Gå til nettbank</a>
+</div>
+{% endblock %}

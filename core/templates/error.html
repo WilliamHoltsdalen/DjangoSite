@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Feil oppsto!{% endblock %}
+
+{% block content %}
+    <h1>Feil oppsto</h1>
+    <p>{{ message }}</p>
+    <a href="{% url 'dashboard' %}">Tilbake til dashboard</a>
+{% endblock %}

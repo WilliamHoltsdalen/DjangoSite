@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Sjekk saldo{% endblock %}
+
+{% block content %}
+    <h1>Oversikt Kontonr: {{ account.account_number }}</h1>
+    <p>Disponibel saldo er: {{ account.balance }} NOK</p>
+    <a href="{% url 'dashboard' %}">Tilbake til dashboard</a>
+{% endblock %}
+
+
