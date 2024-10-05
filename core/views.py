@@ -7,7 +7,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
-
 def home_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('/dashboard/')
@@ -27,18 +26,16 @@ def logout_view(request):
     logout(request)
     return render(request, 'logout.html')
 
+@login_required
 def dashboard_view(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        accounts = customer.accounts.all()
-        transactions = Transaction.objects.filter(account__in=accounts)
-        context = {
-            'transactions': transactions,
-            'accounts': accounts,
-        }   
-        return render(request, 'dashboard.html', context)
-    return HttpResponseRedirect('/login/')
-
+    customer = request.user.customer
+    accounts = customer.accounts.all()
+    transactions = Transaction.objects.filter(account__in=accounts)
+    context = {
+        'transactions': transactions,
+        'accounts': accounts,
+    }   
+    return render(request, 'dashboard.html', context)
 
 def error_view(request):
     context={}
@@ -48,74 +45,70 @@ def success_view(request):
     context={}
     return render(request, 'success.html', context)
 
+@login_required
 def deposit_view(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        accounts = customer.accounts.all()  # Hent alle kontoene til kunden
+    customer = request.user.customer
+    accounts = customer.accounts.all()  # Hent alle kontoene til kunden
 
-        context = {
-            'accounts': accounts,
-        }
+    context = {
+        'accounts': accounts,
+    }
 
-        if request.method == 'POST':
-            account_id = request.POST.get('account_id')  # Hent valgt konto fra skjemaet
-            amount = Decimal(request.POST['amount'])
-            account = get_object_or_404(BankAccount, id=account_id, customer=customer)
+    if request.method == 'POST':
+        account_id = request.POST.get('account_id')  # Hent valgt konto fra skjemaet
+        amount = Decimal(request.POST['amount'])
+        account = get_object_or_404(BankAccount, id=account_id, customer=customer)
 
-            if account.deposit(amount):
-                # Opprett en transaksjon
-                Transaction.objects.create(
-                    account=account,
-                    transaction_type='deposit',
-                    amount=amount,
-                    balance_after=account.balance
-                )
-                messages.success(request, 'Innskudd utført!')
-                return redirect('deposit')
-            messages.error(request, 'Beløp for innskudd må være større enn 0!')
+        if account.deposit(amount):
+            # Opprett en transaksjon
+            Transaction.objects.create(
+                account=account,
+                transaction_type='deposit',
+                amount=amount,
+                balance_after=account.balance
+            )
+            messages.success(request, 'Innskudd utført!')
             return redirect('deposit')
-        return render(request, 'deposit.html', context)
+        messages.error(request, 'Beløp for innskudd må være større enn 0!')
+        return redirect('deposit')
+    return render(request, 'deposit.html', context)
 
+@login_required
 def withdraw_view(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        accounts = customer.accounts.all()  # Hent alle kontoene til kunden
+    customer = request.user.customer
+    accounts = customer.accounts.all()  # Hent alle kontoene til kunden
 
-        context = {
-            'accounts': accounts,
-        }
+    context = {
+        'accounts': accounts,
+    }
 
-        if request.method == 'POST':
-            account_id = request.POST.get('account_id')  # Hent valgt konto fra skjemaet
-            amount = Decimal(request.POST['amount'])
-            account = get_object_or_404(BankAccount, id=account_id, customer=customer)
+    if request.method == 'POST':
+        account_id = request.POST.get('account_id')  # Hent valgt konto fra skjemaet
+        amount = Decimal(request.POST['amount'])
+        account = get_object_or_404(BankAccount, id=account_id, customer=customer)
 
-            if account.withdraw(amount):
-                # Opprett en transaksjon
-                Transaction.objects.create(
-                    account=account,
-                    transaction_type='withdraw',
-                    amount=amount,
-                    balance_after=account.balance
-                )
-                messages.success(request, 'Uttak utført!')
-                return redirect('withdraw')
-            messages.success(request, 'Utilstrekkelige midler!')
+        if account.withdraw(amount):
+            # Opprett en transaksjon
+            Transaction.objects.create(
+                account=account,
+                transaction_type='withdraw',
+                amount=amount,
+                balance_after=account.balance
+            )
+            messages.success(request, 'Uttak utført!')
             return redirect('withdraw')
-        return render(request, 'withdraw.html', context)
+        messages.success(request, 'Utilstrekkelige midler!')
+        return redirect('withdraw')
+    return render(request, 'withdraw.html', context)
 
-
+@login_required
 def check_balance_view(request):
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        accounts = customer.accounts.all()
-        context = {
-            'accounts': accounts,
-        }
-        return render(request, 'balance.html', context)
-    return render(request, 'error.html', {'message': 'Du er ikke logget inn!'})
-
-    
+    customer = request.user.customer
+    accounts = customer.accounts.all()
+    context = {
+        'accounts': accounts,
+    }
+    return render(request, 'balance.html', context)
 
 @login_required
 def account_settings_view(request):
@@ -149,10 +142,9 @@ def account_settings_view(request):
                 address_book_form.save()
                 return redirect('account_settings')
 
-    else:
-        customer_form = CustomerForm(instance=customer)
-        bank_account_form = BankAccountForm()
-        address_book_form = AddressBookForm()
+    customer_form = CustomerForm(instance=customer)
+    bank_account_form = BankAccountForm()
+    address_book_form = AddressBookForm()
 
     context = {
         'customer_form': customer_form,
