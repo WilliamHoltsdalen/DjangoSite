@@ -50,3 +50,12 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f'{self.transaction_type.capitalize()} på {self.amount} for konto {self.account.account_number}'
+
+class AddressBook(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='address_book')
+    account_holder_name = models.CharField(max_length=100)
+    bank_account = models.ForeignKey(BankAccount, on_delete=models.CASCADE)
+    nickname = models.CharField(max_length=50, blank=True)
+
+    def __str__(self):
+        return f"{self.nickname or self.account_holder_name} - {self.bank_account.account_number}"

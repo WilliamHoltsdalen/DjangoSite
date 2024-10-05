@@ -3,8 +3,23 @@
 {% block title %}Sjekk saldo{% endblock %}
 
 {% block content %}
-    <h1>Oversikt Kontonr: {{ account.account_number }}</h1>
-    <p>Disponibel saldo er: {{ account.balance }} NOK</p>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Kontonummer</th>
+                <th>Saldo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for account in accounts %}
+                <tr>
+                    <td>{{ account.account_number }}</td>
+                    <td>{{ account.balance }} NOK</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
     <a href="{% url 'dashboard' %}">Tilbake til dashboard</a>
 {% endblock %}
 

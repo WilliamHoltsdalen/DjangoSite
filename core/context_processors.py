@@ -6,19 +6,19 @@ def account_context(request):
     if request.user.is_authenticated:
         try:
             customer = Customer.objects.get(user=request.user)
-            account = BankAccount.objects.get(customer=customer)
+            bank_accounts = customer.accounts.all()
+            account = bank_accounts.first()
         except BankAccount.DoesNotExist or Customer.DoesNotExist:
             account = None
     return {
         'account': account
     }
+
 def customer_context(request):
     customer = None
     if request.user.is_authenticated:
         try:
             customer = Customer.objects.get(user=request.user)
         except Customer.DoesNotExist:
-            return render(request, 'error.html', {'message': 'Kunde ikke funnet!'})
-    return {
-        'customer': customer
-    }
+            customer = None
+    return {'customer': customer}
