@@ -7,12 +7,16 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+def landing_page_view(request):
+    context = {}
+    return render(request, 'landing_page.html', context)
+
 def home_view(request):
-    if request.user.is_authenticated:
-        return HttpResponseRedirect('/dashboard/')
-    return render(request, 'home.html')
+    return redirect('landing_page')
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']

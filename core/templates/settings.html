@@ -1,66 +1,86 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Konto Innstillinger{% endblock %}
+{% block title %}Account Settings{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1 class="mt-4">Kontoinnstillinger</h1>
+<div class="container mt-5">
+    <h1 class="mb-4">Account Settings</h1>
 
-    <!-- Kundeinformasjon -->
-    <h2>Oppdater kundeinformasjon</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ customer_form.as_p }}
-        <button type="submit" class="btn btn-primary">Oppdater informasjon</button>
-    </form>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2 class="card-title h5 mb-0">Update Customer Information</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ customer_form.as_p }}
+                        <button type="submit" class="btn btn-primary">Update Information</button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-    <!-- Bankkontoer -->
-    <h2 class="mt-5">Dine bankkontoer</h2>
-    <ul class="list-group">
-        {% for account in bank_accounts %}
-        <li class="list-group-item">
-            {{ account.account_number }} - Saldo: {{ account.balance }}
-            <form action="{% url 'delete_bank_account' account.id %}" method="POST" class="d-inline">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-sm">Slett</button>
-            </form>
-        </li>
-        {% empty %}
-        <p>Ingen kontoer funnet.</p>
-        {% endfor %}
-    </ul>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2 class="card-title h5 mb-0">Your Bank Accounts</h2>
+                </div>
+                <div class="card-body">
+                    {% for account in bank_accounts %}
+                        <div class="account-item">
+                            <span>{{ account.account_number }} - Balance: {{ account.balance }}</span>
+                            <form method="post" action="{% url 'delete_bank_account' account.id %}" class="delete-form">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
 
-    <!-- Legg til ny konto -->
-    <h3 class="mt-4">Legg til ny bankkonto</h3>
-    <form method="POST">
-        {% csrf_token %}
-        {{ bank_account_form.as_p }}
-        <button type="submit" name="add_account" class="btn btn-success">Legg til konto</button>
-    </form>
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2 class="card-title h5 mb-0">Add New Bank Account</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ bank_account_form.as_p }}
+                        <button type="submit" name="add_account" class="btn btn-success">Add Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- Adressebok -->
-    <h2 class="mt-5">Adressebok</h2>
-    <ul class="list-group">
-        {% for contact in address_book %}
-        <li class="list-group-item">
-            {{ contact.account_holder_name }} - Konto: {{ contact.bank_account.account_number }} ({{ contact.nickname }})
-            <form action="{% url 'delete_address_book_entry' contact.id %}" method="POST" class="d-inline">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger btn-sm">Slett</button>
-            </form>
-        </li>
-        {% empty %}
-        <p>Ingen kontakter funnet.</p>
-        {% endfor %}
-    </ul>
-
-    <!-- Legg til ny kontakt i adresseboken -->
-    <h3 class="mt-4">Legg til ny kontakt i adresseboken</h3>
-    <form method="POST">
-        {% csrf_token %}
-        {{ address_book_form.as_p }}
-        <button type="submit" name="add_address_book" class="btn btn-success">Legg til kontakt</button>
-    </form>
-
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h2 class="card-title h5 mb-0">Address Book</h2>
+                </div>
+                <div class="card-body">
+                    {% for contact in address_book %}
+                        <div class="address-book-entry">
+                            <span>{{ contact.account_holder_name }} - Account: {{ contact.bank_account.account_number }} ({{ contact.nickname }})</span>
+                            <form method="post" action="{% url 'delete_address_book_entry' contact.id %}" class="delete-form">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                    <h3 class="h6 mt-4">Add New Contact</h3>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ address_book_form.as_p }}
+                        <button type="submit" name="add_address_book" class="btn btn-success">Add Contact</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
