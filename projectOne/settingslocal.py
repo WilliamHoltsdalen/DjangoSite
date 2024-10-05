@@ -71,6 +71,9 @@ TEMPLATES = [
     },
 ]
 
+# URL for login
+LOGIN_URL = '/login'
+
 # Etter at brukeren logger inn
 LOGIN_REDIRECT_URL = '/dashboard'
 
