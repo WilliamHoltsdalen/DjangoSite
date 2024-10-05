@@ -1,9 +1,25 @@
+# Django-files
+*.log
+*.pot
 *.pyc
-*/*.pyc
-*/*/*.pyc
+__pycache__/
 
-.env
+# Python virtual environments
+venv/
+env/
 
+# pyenv
+.python-version
+
+# VSCode settings
+.vscode/
+
+# SQLite database
 db.sqlite3
 
-core/migrations
+# Django migrations
+*/migrations/
+!*/migrations/__init__.py  # Keep __init__.py which is necessary for the migrations module.
+
+# Secrets and environment settings
+.env
