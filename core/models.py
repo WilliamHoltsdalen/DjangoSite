@@ -40,6 +40,8 @@ class Transaction(models.Model):
     TRANSACTION_TYPE_CHOICES = [
         ('deposit', 'Innskudd'),
         ('withdraw', 'Uttak'),
+        ('transfer', 'Overføring'),
+        ('payment', 'Betaling'),
     ]
 
     account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name='transactions')
@@ -47,6 +49,7 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     balance_after = models.DecimalField(max_digits=10, decimal_places=2)
     timestamp = models.DateTimeField(auto_now_add=True)
+    receiver = models.ForeignKey(BankAccount, on_delete=models.CASCADE, related_name='received_transactions', null=True, blank=True)
 
     def __str__(self):
         return f'{self.transaction_type.capitalize()} på {self.amount} for konto {self.account.account_number}'

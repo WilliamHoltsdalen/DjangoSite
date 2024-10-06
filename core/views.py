@@ -106,6 +106,63 @@ def withdraw_view(request):
     return render(request, 'withdraw.html', context)
 
 @login_required
+def transfer_view(request):
+    customer = request.user.customer
+    accounts = customer.accounts.all()
+    address_book = AddressBook.objects.filter(customer=customer)
+    address_book_choices = [(entry.bank_account.account_number, f"{entry.account_holder_name} - {entry.nickname}") for entry in address_book]
+    
+    context = {
+        'accounts': accounts,
+        'receivers': address_book_choices,
+    }
+
+    if request.method == 'POST':
+        amount = Decimal(request.POST['amount'])
+        sender_account_id = request.POST.get('sender_account_id')
+        address_book_entry_number = request.POST.get('address_book_entry_number')
+        custom_receiver_number = request.POST.get('custom_account_number')
+
+        receiver_number = custom_receiver_number if custom_receiver_number else address_book_entry_number
+
+        sender_account = get_object_or_404(BankAccount, id=sender_account_id, customer=customer)
+
+        receiver_account = BankAccount.objects.filter(account_number=receiver_number).first()
+
+        if receiver_account:
+            if sender_account.balance >= amount:
+                sender_account.withdraw(amount)
+                receiver_account.deposit(amount)
+
+                # Sender transaction
+                Transaction.objects.create(
+                    account=sender_account,
+                    transaction_type='transfer',
+                    amount=amount,
+                    balance_after=sender_account.balance,
+                    receiver=receiver_account 
+                )
+
+                # Reciever transaction
+                Transaction.objects.create(
+                    account=receiver_account,
+                    transaction_type='payment',
+                    amount=amount,
+                    balance_after=receiver_account.balance,
+                )
+
+                messages.success(request, 'Overføringen var vellykket!')
+                return redirect('transfer')
+
+            messages.error(request, 'Utilstrekkelige midler!')
+            return redirect('transfer')
+
+        messages.error(request, 'Mottakeren finnes ikke.')
+        return redirect('transfer')
+
+    return render(request, 'transfer.html', context)
+
+@login_required
 def check_balance_view(request):
     customer = request.user.customer
     accounts = customer.accounts.all()

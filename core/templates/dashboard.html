@@ -8,39 +8,37 @@
     <p class="text-center">Velg en handling fra listen under:</p>
     
     <div class="row mt-4">
-        <!-- Innskudd knapp -->
         <div class="col-md-4 mb-4">
             <div class="card text-center shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">Innskudd til konto</h5>
+                    <h5 class="card-title"><i class="fas fa-piggy-bank"></i> Innskudd til konto</h5>
                     <p class="card-text">Legg til penger til kontoen din enkelt.</p>
                     <a href="{% url 'deposit' %}" class="btn btn-primary">Gjør innskudd</a>
                 </div>
             </div>
         </div>
 
-        <!-- Uttak knapp -->
         <div class="col-md-4 mb-4">
             <div class="card text-center shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">Uttak fra konto</h5>
+                    <h5 class="card-title"><i class="fas fa-money-bill-wave"></i> Uttak fra konto</h5>
                     <p class="card-text">Ta ut penger fra kontoen din.</p>
                     <a href="{% url 'withdraw' %}" class="btn btn-warning">Gjør uttak</a>
                 </div>
             </div>
         </div>
 
-        <!-- Sjekk saldo knapp -->
         <div class="col-md-4 mb-4">
             <div class="card text-center shadow-sm">
                 <div class="card-body">
-                    <h5 class="card-title">Sjekk saldo</h5>
-                    <p class="card-text">Få en oppdatert oversikt over saldoen din.</p>
-                    <a href="{% url 'check_balance' %}" class="btn btn-success">Sjekk saldo</a>
+                    <h5 class="card-title"><i class="fas fa-wallet"></i>Se kontooversikt</h5>
+                    <p class="card-text">Få en oppdatert oversikt over kontoen(e) dine.</p>
+                    <a href="{% url 'check_balance' %}" class="btn btn-success">Kontooversikt</a>
                 </div>
             </div>
         </div>
     </div>
+    
 
     <div class="row mt-3">
         <div class="col-md-4 mb-4">
@@ -52,20 +50,32 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Overfør penger</h5>
+                    <p class="card-text">Send penger til andre kontoer.</p>
+                    <a href="{% url 'transfer' %}" class="btn btn-danger">Overfør penger</a>
+                </div>
+            </div>
+        </div>
     </div>
+
+    
 
     <!-- Transaksjoner -->
     <div class="col-lg-12 mb-4">
         <div class="card shadow-lg">
             <div class="card-body">
                 <h5 class="card-title">Siste transaksjoner</h5>
-                <table class="table table-hover">
+                <table class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">Dato</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Beløp</th>
-                            <th scope="col">Saldo etter transaksjon</th>
+                            <th>Dato</th>
+                            <th>Type</th>
+                            <th>Beløp</th>
+                            <th>Saldo etter transaksjon</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,6 +93,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                
                 <a href="{% url 'home' %}" class="btn btn-info">Vis alle transaksjoner</a>
             </div>
         </div>

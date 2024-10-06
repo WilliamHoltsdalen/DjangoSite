@@ -14,6 +14,7 @@ urlpatterns = [
     path('settings/', views.account_settings_view, name='account_settings'),
     path('settings/delete_account/<int:account_id>/', views.delete_bank_account_view, name='delete_bank_account'),
     path('settings/delete_address_book/<int:address_book_id>/', views.delete_address_book_entry_view, name='delete_address_book_entry'),
+    path('transfer/', views.transfer_view, name='transfer'),
     path('error/', views.error_view, name='error'),
     path('success/', views.success_view, name='success'),
 ]

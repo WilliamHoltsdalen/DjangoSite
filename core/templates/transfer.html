@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}Overfør penger{% endblock %}
+
+{% block content %}
+    <h1>Overfør penger</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- Velg senderkonto -->
+        <div class="form-group">
+            <label for="sender_account_id">Velg senderkonto</label>
+            <select name="sender_account_id" id="sender_account_id" class="form-control">
+                {% for account in accounts %}
+                    <option value="{{ account.id }}">
+                        {{ account.account_number }} - Saldo: {{ account.balance }} NOK
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Mottakerseksjon: Adressebok og manuelt kontonummer på samme linje -->
+        <div class="row">
+            <div class="col-md-6">
+                <!-- Velg mottaker fra adressebok -->
+                <div class="form-group">
+                    <label for="address_book_entry_number">Velg mottaker fra adressebok (valgfritt)</label>
+                    <select name="address_book_entry_number" id="address_book_entry_number" class="form-control">
+                        <option value="">Velg fra adressebok</option>
+                        {% for account_number, account_name in receivers %}
+                            <option value="{{ account_number }}">{{ account_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Manuelt kontonummer -->
+                <div class="form-group">
+                    <label for="custom_account_number">Eller skriv inn kontonummer manuelt</label>
+                    <input type="text" name="custom_account_number" class="form-control" placeholder="Kontonummer">
+                </div>
+            </div>
+        </div>
+
+        <!-- Beløp -->
+        <div class="form-group">
+            <label for="amount">Beløp</label>
+            <input type="number" name="amount" id="amount" class="form-control" step="0.01" min="0" placeholder="F.eks. 100.00" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Overfør penger</button>
+    </form>
+
+    <!-- Feilmeldinger -->
+    {% if messages %}
+        <div class="messages mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <a href="{% url 'dashboard' %}" class="btn btn-secondary mt-3">Tilbake til dashboard</a>
+{% endblock %}

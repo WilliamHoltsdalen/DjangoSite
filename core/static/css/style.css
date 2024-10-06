@@ -4,6 +4,45 @@ body {
     background-color: #f8f9fa;
 }
 
+
+/* For button styling */
+.btn {
+    border-radius: 30px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Adding icons to cards */
+.card {
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+    padding: 20px;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Table styling */
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.table th {
+    background-color: #f1f1f1;
+    font-weight: bold;
+}
+
+.table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+
 /* Navbar styles */
 .navbar {
     background-color: #ffffff;
