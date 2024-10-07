@@ -7,6 +7,7 @@ urlpatterns = [
     path('landing/', views.landing_page_view, name='landing_page'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('register/', views.register, name='register'),
     path('dashboard/', views.dashboard_view, name='dashboard'),
     path('deposit/', views.deposit_view, name='deposit'),
     path('withdraw/', views.withdraw_view, name='withdraw'),

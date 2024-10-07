@@ -6,6 +6,8 @@ from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from .forms import CustomUserCreationForm
+from django.db import IntegrityError
 
 def landing_page_view(request):
     context = {}
@@ -25,6 +27,29 @@ def login_view(request):
         if user is not None:
             login(request, user)
             return HttpResponseRedirect('/home/')
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            try:
+                user = form.save()
+                customer = Customer.objects.create(
+                    user=user,
+                    first_name=form.cleaned_data['first_name'],
+                    last_name=form.cleaned_data['last_name'],
+                    email=form.cleaned_data['email'],
+                    phone_number=form.cleaned_data.get('phone_number', ''),
+                    address=form.cleaned_data.get('address', '')
+                )
+                login(request, user)
+                return redirect('dashboard')
+            except IntegrityError:
+                user.delete()
+                messages.error(request, "En feil oppstod under registreringen. Vennligst prøv igjen.")
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'register.html', {'form': form})
 
 def logout_view(request):
     logout(request)
@@ -179,28 +204,35 @@ def account_settings_view(request):
 
     if request.method == 'POST':
         # Update customer info
-        customer_form = CustomerForm(request.POST, instance=customer)
-        if customer_form.is_valid():
-            customer_form.save()
-            return redirect('account_settings')
-
+        if 'update_customer' in request.POST:
+            customer_form = CustomerForm(request.POST, instance=customer)
+            if customer_form.is_valid():
+                customer_form.save()
+                messages.success(request, 'Your information has been updated successfully.')
+                return redirect('account_settings')
+        
         # Add new bank account
-        if 'add_account' in request.POST:
+        elif 'add_account' in request.POST:
             bank_account_form = BankAccountForm(request.POST)
             if bank_account_form.is_valid():
                 new_account_number = bank_account_form.cleaned_data['account_number']
                 if customer.accounts.filter(account_number=new_account_number).exists():
-                    return render(request, 'settings.html', {'error': 'Kontoen eksisterer allerede!'})
-                new_account = bank_account_form.save(commit=False)
-                new_account.customer = customer
-                new_account.save()
+                    messages.error(request, 'This account number already exists.')
+                else:
+                    new_account = bank_account_form.save(commit=False)
+                    new_account.customer = customer
+                    new_account.save()
+                    messages.success(request, 'New bank account added successfully.')
                 return redirect('account_settings')
 
         # Add to address book
-        if 'add_address_book' in request.POST:
+        elif 'add_address_book' in request.POST:
             address_book_form = AddressBookForm(request.POST)
             if address_book_form.is_valid():
-                address_book_form.save()
+                new_entry = address_book_form.save(commit=False)
+                new_entry.customer = customer
+                new_entry.save()
+                messages.success(request, 'New address book entry added successfully.')
                 return redirect('account_settings')
 
     customer_form = CustomerForm(instance=customer)
@@ -227,3 +259,4 @@ def delete_address_book_entry_view(request, address_book_id):
     address_book_entry = get_object_or_404(AddressBook, id=address_book_id, customer=request.user.customer)
     address_book_entry.delete()
     return redirect('account_settings')
+

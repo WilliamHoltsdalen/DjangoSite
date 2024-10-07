@@ -4,10 +4,9 @@ body {
     background-color: #f8f9fa;
 }
 
-
 /* For button styling */
 .btn {
-    border-radius: 30px;
+    border-radius: 20px;
     padding: 10px 20px;
     font-size: 1rem;
     transition: all 0.3s ease;
@@ -18,6 +17,7 @@ body {
 }
 
 /* Adding icons to cards */
+
 .card {
     border-radius: 10px;
     transition: box-shadow 0.3s ease;
@@ -41,7 +41,6 @@ body {
 .table tbody tr:nth-child(odd) {
     background-color: #f9f9f9;
 }
-
 
 /* Navbar styles */
 .navbar {
@@ -112,7 +111,7 @@ body {
 .card-body form p {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Align label and input with space between */
+    justify-content: space-between;
     margin-bottom: 10px;
 }
 
@@ -132,7 +131,7 @@ body {
 .account-item,
 .address-book-entry {
     display: flex;
-    justify-content: space-between; /* Keep content on the same line */
+    justify-content: space-between;
     align-items: center;
     padding: 10px 0;
     border-bottom: 1px solid #ddd;
@@ -145,7 +144,7 @@ body {
 
 .account-item form,
 .address-book-entry form {
-    margin: 0; /* Keep delete button inline */
+    margin: 0;
 }
 
 /* Delete form style (on the same line as entry) */
@@ -238,4 +237,74 @@ footer {
     border-top: 1px solid #dee2e6;
     padding: 20px 0;
     margin-top: 50px;
+}
+
+
+/* Register page styles */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.register-form {
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.register-form h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.register-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.register-form .form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.register-form label {
+    width: 120px;
+    margin-right: 10px;
+    text-align: right;
+}
+
+.register-form input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.register-form ul.errorlist {
+    color: #dc3545;
+    padding-left: 130px;
+    margin-top: 5px;
+    list-style-type: none;
+}
+
+.btn-register {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-register:hover {
+    background-color: #0056b3;
 }
