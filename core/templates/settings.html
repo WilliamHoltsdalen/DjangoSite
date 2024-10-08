@@ -1,23 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Account Settings{% endblock %}
+{% block title %}Kontoinnstillinger{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="mb-4">Account Settings</h1>
+    <h1 class="mb-4">Kontoinnstillinger</h1>
 
     <div class="row">
         <div class="col-md-6">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h2 class="card-title h5 mb-0">Update Customer Information</h2>
+                    <h2 class="card-title h5 mb-0">Oppdater kundeinformasjon</h2>
                 </div>
                 <div class="card-body">
                     <form method="post">
                         {% csrf_token %}
                         {{ customer_form.as_p }}
-                        <button type="submit" class="btn btn-primary">Update Information</button>
+                        <button type="submit" class="btn btn-primary">Oppdater informasjon</button>
                     </form>
                 </div>
             </div>
@@ -26,15 +26,15 @@
         <div class="col-md-6">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h2 class="card-title h5 mb-0">Your Bank Accounts</h2>
+                    <h2 class="card-title h5 mb-0">Dine kontoer</h2>
                 </div>
                 <div class="card-body">
                     {% for account in bank_accounts %}
                         <div class="account-item">
-                            <span>{{ account.account_number }} - Balance: {{ account.balance }}</span>
+                            <span>{{ account.account_number }} - Saldo: {{ account.balance }}</span>
                             <form method="post" action="{% url 'delete_bank_account' account.id %}" class="delete-form">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                <button type="submit" class="btn btn-sm btn-danger">Slett</button>
                             </form>
                         </div>
                     {% endfor %}
@@ -43,13 +43,13 @@
 
             <div class="card mb-4">
                 <div class="card-header">
-                    <h2 class="card-title h5 mb-0">Add New Bank Account</h2>
+                    <h2 class="card-title h5 mb-0">Legg til ny konto</h2>
                 </div>
                 <div class="card-body">
                     <form method="post">
                         {% csrf_token %}
                         {{ bank_account_form.as_p }}
-                        <button type="submit" name="add_account" class="btn btn-success">Add Account</button>
+                        <button type="submit" name="add_account" class="btn btn-success">Legg til</button>
                     </form>
                 </div>
             </div>
@@ -60,23 +60,23 @@
         <div class="col-md-12">
             <div class="card mb-4">
                 <div class="card-header">
-                    <h2 class="card-title h5 mb-0">Address Book</h2>
+                    <h2 class="card-title h5 mb-0">Adressebok</h2>
                 </div>
                 <div class="card-body">
                     {% for contact in address_book %}
                         <div class="address-book-entry">
-                            <span>{{ contact.account_holder_name }} - Account: {{ contact.bank_account.account_number }} ({{ contact.nickname }})</span>
+                            <span>{{ contact.account_holder_name }} - Konto: {{ contact.bank_account.account_number }} ({{ contact.nickname }})</span>
                             <form method="post" action="{% url 'delete_address_book_entry' contact.id %}" class="delete-form">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                <button type="submit" class="btn btn-sm btn-danger">Slett</button>
                             </form>
                         </div>
                     {% endfor %}
-                    <h3 class="h6 mt-4">Add New Contact</h3>
+                    <h3 class="h6 mt-4">Legg til kontakt</h3>
                     <form method="post">
                         {% csrf_token %}
                         {{ address_book_form.as_p }}
-                        <button type="submit" name="add_address_book" class="btn btn-success">Add Contact</button>
+                        <button type="submit" name="add_address_book" class="btn btn-success">Legg til</button>
                     </form>
                 </div>
             </div>
