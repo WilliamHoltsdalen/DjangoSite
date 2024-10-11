@@ -22,7 +22,9 @@
                     {% if messages %}
                         <div class="messages">
                             {% for message in messages %}
-                                <h4 class="{{ message.tags }}">{{ message }}</h4>
+                                {% if "Din informasjon er oppdatert" in message.message %}
+                                    <h4 class="{{ message.tags }}">{{ message }}</h4>
+                                {% endif %}
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -61,7 +63,9 @@
                     {% if messages %}
                         <div class="messages">
                             {% for message in messages %}
+                            {% if "Ny konto lagt til" in message.message %}
                                 <h4 class="{{ message.tags }}">{{ message }}</h4>
+                            {% endif %}
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -95,7 +99,9 @@
                     {% if messages %}
                         <div class="messages">
                             {% for message in messages %}
+                            {% if "Ny kontakt lagt til" in message.message %}
                                 <h4 class="{{ message.tags }}">{{ message }}</h4>
+                            {% endif %}
                             {% endfor %}
                         </div>
                     {% endif %}
