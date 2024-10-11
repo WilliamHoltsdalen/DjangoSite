@@ -1,4 +1,4 @@
-from .forms import CustomerForm, BankAccountForm, AddressBookForm
+from .forms import CustomerForm, BankAccountForm, AddressBookForm, CustomUserCreationForm
 from .models import BankAccount, Transaction, Customer, AddressBook
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
@@ -6,7 +6,6 @@ from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import CustomUserCreationForm
 from django.db import IntegrityError
 
 def landing_page_view(request):
