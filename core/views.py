@@ -58,7 +58,7 @@ def logout_view(request):
 def dashboard_view(request):
     customer = request.user.customer
     accounts = customer.accounts.all()
-    transactions = Transaction.objects.filter(account__in=accounts)
+    transactions = Transaction.objects.filter(account__in=accounts).order_by('timestamp').reverse()[:5]
     context = {
         'transactions': transactions,
         'accounts': accounts,

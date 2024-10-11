@@ -73,7 +73,8 @@
                     <thead>
                         <tr>
                             <th>Dato</th>
-                            <th>Type</th>
+                            <th>Konto</th>
+                            <th>Transaksjonstype</th>
                             <th>Beløp</th>
                             <th>Saldo etter transaksjon</th>
                         </tr>
@@ -82,6 +83,7 @@
                         {% for transaction in transactions %}
                         <tr>
                             <td>{{ transaction.timestamp }}</td>
+                            <td>{{ transaction.account.account_number }}</td>
                             <td>{{ transaction.transaction_type|capfirst }}</td>
                             <td>{{ transaction.amount }} NOK</td>
                             <td>{{ transaction.balance_after }} NOK</td>
