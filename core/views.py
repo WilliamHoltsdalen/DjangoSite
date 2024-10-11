@@ -207,7 +207,7 @@ def account_settings_view(request):
             customer_form = CustomerForm(request.POST, instance=customer)
             if customer_form.is_valid():
                 customer_form.save()
-                messages.success(request, 'Your information has been updated successfully.')
+                messages.success(request, 'Din informasjon er oppdatert')
                 return redirect('account_settings')
         
         # Add new bank account
@@ -221,7 +221,7 @@ def account_settings_view(request):
                     new_account = bank_account_form.save(commit=False)
                     new_account.customer = customer
                     new_account.save()
-                    messages.success(request, 'New bank account added successfully.')
+                    messages.success(request, 'Ny konto lagt til')
                 return redirect('account_settings')
 
         # Add to address book
@@ -231,7 +231,7 @@ def account_settings_view(request):
                 new_entry = address_book_form.save(commit=False)
                 new_entry.customer = customer
                 new_entry.save()
-                messages.success(request, 'New address book entry added successfully.')
+                messages.success(request, 'Ny kontakt lagt til')
                 return redirect('account_settings')
 
     customer_form = CustomerForm(instance=customer)
