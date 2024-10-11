@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from django.core.paginator import Paginator
 
 def landing_page_view(request):
     context = {}
@@ -246,6 +247,21 @@ def account_settings_view(request):
         'address_book_form': address_book_form,
     }
     return render(request, 'settings.html', context)
+
+@login_required
+def transactions_view(request):
+    customer = request.user.customer
+    accounts = customer.accounts.all()
+    transactions = Transaction.objects.filter(account__in=accounts).order_by('-timestamp')
+
+    paginator = Paginator(transactions, 10) 
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'page_obj': page_obj,
+    }
+    return render(request, 'transactions.html', context)
 
 @login_required
 def delete_bank_account_view(request, account_id):

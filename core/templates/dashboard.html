@@ -84,7 +84,7 @@
                         <tr>
                             <td>{{ transaction.timestamp }}</td>
                             <td>{{ transaction.account.account_number }}</td>
-                            <td>{{ transaction.transaction_type|capfirst }}</td>
+                            <td>{{ transaction.get_transaction_type_display }}</td>
                             <td>{{ transaction.amount }} NOK</td>
                             <td>{{ transaction.balance_after }} NOK</td>
                         </tr>
@@ -96,7 +96,7 @@
                     </tbody>
                 </table>
                 
-                <a href="{% url 'home' %}" class="btn btn-info">Vis alle transaksjoner</a>
+                <a href="{% url 'transactions' %}" class="btn btn-info">Vis alle transaksjoner</a>
             </div>
         </div>
     </div>
